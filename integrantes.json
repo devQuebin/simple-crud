@@ -1,0 +1,32 @@
+[
+  {
+    "nombre": "Bart",
+    "apellido": "Simpson",
+    "dni": "111111111",
+    "email": "bart@simpson.com"
+  },
+  {
+    "nombre": "Lisa",
+    "apellido": "Simpson",
+    "dni": "222222222",
+    "email": "lisa@simpson.com"
+  },
+  {
+    "nombre": "Marge",
+    "apellido": "Simpson",
+    "dni": "333333333",
+    "email": "marge@simpson.com"
+  },
+  {
+    "nombre": "homer",
+    "apellido": "simpson",
+    "dni": "444444444",
+    "email": "homero@simpson.com"
+  },
+  {
+    "nombre": "Ned",
+    "apellido": "Flanders",
+    "dni": "555555555",
+    "email": "ned@flanders.com"
+  }
+]
