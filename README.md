@@ -50,7 +50,7 @@ Cada uno tiene un mensaje por consola para verificar su correcto funcionamiento.
 
 ## POST
 
-http://localhost:3000/integrantes/agregar
+http://localhost:5000/integrantes/agregar
 
 Para poder agregar un nuevo integrante, desde el Postman, se debe seleccionar BODY para poder ingresar un json.
 El integrante nuevo debe tener formato json.
@@ -67,7 +67,7 @@ Si hay campos incompletos habra un mensaje de "Los campos estan incompletos". Aj
 
 ## PUT
 
-http://localhost:3000/integrantes/maggie@simpson.com
+http://localhost:5000/integrantes/maggie@simpson.com
 
 Esta ruta ejemplo editara el apellido de Maggie simpson (el mail de maggie simpson es el parametro)
 
@@ -82,7 +82,7 @@ En caso de error el sistema respondera "No se encontro el email"
 
 ## DELETE
 
-http://localhost:3000/integrantes/666666666
+http://localhost:5000/integrantes/666666666
 
 El sistema respondera con la lista actualizada (en este caso eliminamos a maggie)
 En caso de error el sistema respondera "Integrante no encontrado"

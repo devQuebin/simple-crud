@@ -1,7 +1,10 @@
 const express = require("express"); //primero importamos express
 const fs = require("fs"); //segundo la libreria fs, esta es la que nos permite interactuar con los archivos
 const app = express(); // en la constante app guardo express para poder usarlo en mi aplicacion
+const jwt = require("jsonwebtoken"); //importacion de json web token
+
 const PORT = 5000; //defino el puerto 5000, ya que la mayoria de los proyectos tienen el puerto por default 3000, para diferenciar este proyecto usamos el puerto 5000
+const SECRET_KEY = "secret_key"; // key de testeo
 //metodo use para que mi proyecto trabaje con json
 app.use(express.json());
 
@@ -16,19 +19,47 @@ const editarJson = (data) => {
   fs.writeFileSync("./integrantes.json", JSON.stringify(data, null, 2));
 };
 
+// Middleware para verificar tokens
+const verifyToken = (req, res, next) => {
+  const token = req.headers["authorization"]?.split(" ")[1]; // Formato esperado: "Bearer <token>"
+  if (!token) {
+    return res.status(403).json({ error: "Token no proporcionado" });
+  }
+
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: "Token inválido o expirado" });
+    }
+    req.user = decoded; // Almacena los datos del token decodificado
+    next();
+  });
+};
+
 // ruta principal "/" Consigna GET 1
 app.get("/", (req, res) => {
   res.send("La API está funcionando correctamente (consigna 1)");
 });
 
+//nueva ruta de login
+app.post("/login", (req, res) => {
+  const { username, password } = req.body; // Valida credenciales reales aquí.
+  if (username === "test_user" && password === "hola123") {
+    const token = jwt.sign({ user: username }, SECRET_KEY, { expiresIn: "1h" });
+    res.json({ token });
+  } else {
+    res.status(401).json({ error: "Credenciales inválidas" });
+  }
+});
+
 // ruta GET /integrantes Consigna GET 2, es un GET ALL que devuelte todos los elementos del json
-app.get("/integrantes", (req, res) => {
+app.get("/integrantes", verifyToken, (req, res) => {
+  //se agrega el verifyToken para que la consulta pida el token en su header.
   const integrantes = leerJson();
   res.json(integrantes);
 });
 
 // ruta GET /integrandes/:dni Consigna GET 3, trae 1 elemento del json segun su DNI
-app.get("/integrantes/:dni", (req, res) => {
+app.get("/integrantes/:dni", verifyToken, (req, res) => {
   const { dni } = req.params;
   const integrantes = leerJson();
   const integrante = integrantes.find((i) => i.dni === dni);
@@ -59,7 +90,7 @@ app.post("/integrantes/agregar", (req, res) => {
 });
 
 // ruta PUT /integrantes/:email Consigna PUT para editar una entrada segun su mail.
-app.put("/integrantes/:email", (req, res) => {
+app.put("/integrantes/:email", verifyToken, (req, res) => {
   const { email } = req.params; //el metodo PUT va a pedir como parametro el email para buscarlo en la lista
   const { apellido } = req.body; //la consigna solo pide editar el apellido
   const integrantes = leerJson(); //trae la lista
@@ -75,7 +106,7 @@ app.put("/integrantes/:email", (req, res) => {
 });
 
 // ruta DELETE /integrantes/:dni Consigna DELETE busca segun dni y lo borra si lo encuentra. OJO porque la ruta es la misma que el GetOne. En el postman debe estar bien puesto el metodo
-app.delete("/integrantes/:dni", (req, res) => {
+app.delete("/integrantes/:dni", verifyToken, (req, res) => {
   const { dni } = req.params; //el metodo pide como parametro el dni
   let integrantes = leerJson(); //me traigo toda la lista para buscar por dni
   const integrante = integrantes.find((i) => i.dni === dni); //busco por dni en la lista
