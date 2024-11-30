@@ -24,11 +24,11 @@ GET /integrantes =Es un GetAll, devuelve todos los integrantes.
 
 GET /integrantes/:dni = Es un GetOne, trae un integrante segun su dni.
 
-POST /integrantes/agregar = Metodo para crear un nuevo integrante. http://localhost:5000/integrantes/agregar
+POST /integrantes/agregar = Metodo para crear un nuevo integrante.
 
-PUT /integrantes/:email = Metodo para actualizar un campo de un integrante segun su mail. http://localhost:5000/integrantes/:email
+PUT /integrantes/:email = Metodo para actualizar un campo de un integrante segun su mail.
 
-DELETE /integrantes/:dni = Elimina un integrante del archivo JSON segun su dni. http://localhost:5000/integrantes/:dni
+DELETE /integrantes/:dni = Elimina un integrante del archivo JSON segun su dni.
 
 NOTA: Tener en cuenta que la ruta para el delete y GetOne son iguales, por lo que al hacer la consulta en el Postman, hay que aclarar el metodo HTTP que se utilizara.
 
