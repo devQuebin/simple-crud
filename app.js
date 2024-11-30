@@ -1,13 +1,22 @@
 const express = require("express"); //primero importamos express
-const fs = require("fs"); //segundo la libreria fs, esta es la que nos permite interactuar con los archivos
+// const fs = require("fs"); //segundo la libreria fs, esta es la que nos permite interactuar con los archivos
 const app = express(); // en la constante app guardo express para poder usarlo en mi aplicacion
-const jwt = require("jsonwebtoken"); //importacion de json web token
+// const jwt = require("jsonwebtoken"); //importacion de json web token
+const authRoutes = require("./routes/authRoutes");
+const integrantesRoutes = require("./routes/integrantesRoutes");
+const connectDB = require("./db"); // Importa la conexión
+require("dotenv").config(); // Asegúrate de cargar el archivo .env
 
+connectDB();
 const PORT = 5000; //defino el puerto 5000, ya que la mayoria de los proyectos tienen el puerto por default 3000, para diferenciar este proyecto usamos el puerto 5000
-const SECRET_KEY = "secret_key"; // key de testeo
+// const SECRET_KEY = "secret_key"; // key de testeo
 //metodo use para que mi proyecto trabaje con json
 app.use(express.json());
 
+app.use("/login", authRoutes);
+app.use("/integrantes", integrantesRoutes);
+
+/*
 // leer integrantes desde el archivo json creado con la lib fs
 const leerJson = () => {
   const data = fs.readFileSync("./integrantes.json", "utf-8");
@@ -120,7 +129,7 @@ app.delete("/integrantes/:dni", verifyToken, (req, res) => {
     res.status(404).json({ error: "Integrante no encontrado" }); //respuesta si no existe el dni
   }
 });
-
+*/
 // ruta para correr el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
