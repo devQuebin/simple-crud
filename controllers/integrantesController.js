@@ -13,14 +13,27 @@ const getAllIntegrantes = async (req, res) => {
   }
 };
 
-const getIntegranteByDni = (req, res) => {
+// const getIntegranteByDni = (req, res) => {
+//   const { dni } = req.params;
+//   const integrantes = leerJson();
+//   const integrante = integrantes.find((i) => i.dni === dni);
+//   if (integrante) {
+//     res.status(200).json(integrante);
+//   } else {
+//     res.status(404).json({ error: "No existe un integrante con ese dni" });
+//   }
+// };
+const getIntegranteByDni = async (req, res) => {
   const { dni } = req.params;
-  const integrantes = leerJson();
-  const integrante = integrantes.find((i) => i.dni === dni);
-  if (integrante) {
-    res.status(200).json(integrante);
-  } else {
-    res.status(404).json({ error: "No existe un integrante con ese dni" });
+  try {
+    const integrante = await Integrante.findOne({ dni });
+    if (integrante) {
+      res.status(200).json(integrante);
+    } else {
+      res.status(404).json({ error: "No existe un integrante con ese DNI" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al buscar el integrante" });
   }
 };
 
@@ -50,30 +63,65 @@ const addIntegrante = async (req, res) => {
   }
 };
 
-const updateIntegrante = (req, res) => {
+// const updateIntegrante = (req, res) => {
+//   const { email } = req.params;
+//   const { apellido } = req.body;
+//   const integrantes = leerJson();
+//   const integrante = integrantes.find((i) => i.email === email);
+//   if (integrante) {
+//     integrante.apellido = apellido;
+//     editarJson(integrantes);
+//     res.json({ message: "Apellido actualizado", integrante });
+//   } else {
+//     res.status(404).json({ error: "No se encontró el email" });
+//   }
+// };
+const updateIntegrante = async (req, res) => {
   const { email } = req.params;
   const { apellido } = req.body;
-  const integrantes = leerJson();
-  const integrante = integrantes.find((i) => i.email === email);
-  if (integrante) {
-    integrante.apellido = apellido;
-    editarJson(integrantes);
-    res.json({ message: "Apellido actualizado", integrante });
-  } else {
-    res.status(404).json({ error: "No se encontró el email" });
+
+  try {
+    const integrante = await Integrante.findOneAndUpdate(
+      { email },
+      { apellido },
+      { new: true } // Retorna el documento actualizado
+    );
+    if (integrante) {
+      res.json({ message: "Apellido actualizado", integrante });
+    } else {
+      res
+        .status(404)
+        .json({ error: "No se encontró un integrante con ese email" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al actualizar el integrante" });
   }
 };
 
-const deleteIntegrante = (req, res) => {
+// const deleteIntegrante = (req, res) => {
+//   const { dni } = req.params;
+//   let integrantes = leerJson();
+//   const integrante = integrantes.find((i) => i.dni === dni);
+//   if (integrante) {
+//     integrantes = integrantes.filter((i) => i.dni !== dni);
+//     editarJson(integrantes);
+//     res.json(integrantes);
+//   } else {
+//     res.status(404).json({ error: "Integrante no encontrado" });
+//   }
+// };
+const deleteIntegrante = async (req, res) => {
   const { dni } = req.params;
-  let integrantes = leerJson();
-  const integrante = integrantes.find((i) => i.dni === dni);
-  if (integrante) {
-    integrantes = integrantes.filter((i) => i.dni !== dni);
-    editarJson(integrantes);
-    res.json(integrantes);
-  } else {
-    res.status(404).json({ error: "Integrante no encontrado" });
+
+  try {
+    const integrante = await Integrante.findOneAndDelete({ dni });
+    if (integrante) {
+      res.json({ message: "Integrante eliminado", integrante });
+    } else {
+      res.status(404).json({ error: "Integrante no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el integrante" });
   }
 };
 
