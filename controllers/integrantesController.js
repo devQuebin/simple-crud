@@ -1,4 +1,4 @@
-const { leerJson, editarJson } = require("../utils/fileUtils");
+// const { leerJson, editarJson } = require("../utils/fileUtils");
 const Integrante = require("../models/integrante");
 
 const getAllIntegrantes = async (req, res) => {

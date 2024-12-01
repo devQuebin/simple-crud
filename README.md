@@ -86,3 +86,75 @@ http://localhost:5000/integrantes/666666666
 
 El sistema respondera con la lista actualizada (en este caso eliminamos a maggie)
 En caso de error el sistema respondera "Integrante no encontrado"
+
+# UPDATE - Entrega final - Consigna
+
+Para el marco de la entrega final de backend, se solicita agregar ciertas modificaciones al proyecto:
+
+- Validar un usuario con JWT
+- Autenticar al menos 3 rutas con el token
+- Conectar la app con una base de datos de Mongo Atlas, el cual procesara los datos
+- plus: Estructurar el proyecto de modo de que el codigo no este concentrado en app.js
+
+## Notas
+
+Para no complicar el proyecto y poder aprovechar el codigo de la entrega parcial, opte por trabajar con la misma tematica y usando el codigo como base para hacer las modificaciones.
+
+## Independencias
+
+se instalaron dos dependencias jsonwebtoken para el manejo de la autenticacion, y mongoose para la administracion de la base de dato. Tambien se instalo DOTENV para el manejo de variable de entorno para la URI
+
+En caso de clonar el repositorio, se sugiere hacer pull origin master y npm install
+
+```bash
+npm install
+```
+
+## Explicacion de la re estructuracion.
+
+Con la adicion de las dos funcionalidades a la aplicacion, fue necesario reestructurar el proyecto para mantener orden y claridad.
+
+1. Creacion de .env para agregar la URI de la base de datos. Convirtiendola en una variable de entorno y no exponerla en el codigo directo.
+2. Archivo db.js para la conexion con la BD, incluido el statement try-catch para verificar la conexion con la BD o hacer un log del error
+   "Conexión exitosa a MongoDB Atlas"
+   "Error al conectar con MongoDB Atlas:", error
+3. El resto del proyecto se dividio en: controllers, middlewares, models y route.
+4. A modo de testeo tenemos la carpeta de data (contiene el json viejo) y utils (manejo del json viejo) el cual en esta version quedan deprecados.
+5. Controllers: la carpeta contiene los metodos para el manejo del login e integrantes y los exporta para poder utilizarlos en el resto del codigo.
+6. Routes: define los metodos y las rutas para cada metodo. En estos archivos tambien se define cuales metodos requieren una verificacion con JWT.
+7. Models: define la estructura y atributos de las colecciones, en este caso "integrante".
+8. Middlewares: en este caso tenemos el servicio para verificar y validar el token.
+
+# Login
+
+Para este proyecto se hardcodea un usuario "test_user" con password: "hola123" (definido en el authController.js). El sistema devuelve un mensaje por consola por exito o no.
+La sesion puede durar 1 hora. Y en caso de exito el sistema devuelve un token para validar la sesion.
+
+Para realizar el login con POSTMAN se debe ingresar en el body, con formato json:
+
+```bash
+{
+  "username": "test_user",
+  "password": "hola123"
+}
+```
+
+# Validacion
+
+El token proporcionado es requerido en los metodos GET, PUT y DELETE. En un total de 4 rutas + login.
+
+Para estas validaciones, en POSTMAN debemos asegurar de agregar el Auth bearer token (sin comillas).
+
+# Base de datos
+
+La base de datos se conecta al iniciar la aplicacion con node app.js
+En caso de exito, el sistema devuelve por consola : "Conexión exitosa a MongoDB Atlas"
+
+En caso de error devuelve un log del problema antecedido por:
+"Error al conectar con MongoDB Atlas:", error
+
+Se puede corroborar el funcionamiento de la base de datos por las consultas y por la persistencia de datos al finalizar la aplicacion con ctrl+cj
+
+## Nota final
+
+El resto de la aplicacion (CRUD) funciona igual a la entrega parcial.
