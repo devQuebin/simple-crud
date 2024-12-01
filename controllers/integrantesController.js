@@ -84,7 +84,7 @@ const updateIntegrante = async (req, res) => {
     const integrante = await Integrante.findOneAndUpdate(
       { email },
       { apellido },
-      { new: true } // Retorna el documento actualizado
+      { new: true } // retorna el documento actualizado
     );
     if (integrante) {
       res.json({ message: "Apellido actualizado", integrante });

@@ -4,8 +4,8 @@ const app = express(); // en la constante app guardo express para poder usarlo e
 // const jwt = require("jsonwebtoken"); //importacion de json web token
 const authRoutes = require("./routes/authRoutes");
 const integrantesRoutes = require("./routes/integrantesRoutes");
-const connectDB = require("./db"); // Importa la conexión
-require("dotenv").config(); // Asegúrate de cargar el archivo .env
+const connectDB = require("./db"); // importamos la conexion a la bd
+require("dotenv").config(); // nos aseguraos de cargar el env
 
 connectDB();
 const PORT = 5000; //defino el puerto 5000, ya que la mayoria de los proyectos tienen el puerto por default 3000, para diferenciar este proyecto usamos el puerto 5000
